@@ -1,0 +1,1 @@
+[02-Feb-2023 14:44:48 Asia/Ho_Chi_Minh] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 7.4.0". You are running 5.6.40. in /home/vpnphaw80um5/public_html/vendor/composer/platform_check.php on line 25
