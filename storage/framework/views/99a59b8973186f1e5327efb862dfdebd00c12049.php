@@ -150,7 +150,7 @@
                                 <th>Ảnh</th>
                                 <th><?php echo app('translator')->get('Title'); ?></th>
                                 <th>Danh mục</th>
-                                <th>Giá</th>
+                                <th>Giá bán</th>
                                 <th><?php echo app('translator')->get('Order'); ?></th>
                                 <th><?php echo app('translator')->get('Tình trạng'); ?></th>
                                 <th><?php echo app('translator')->get('Updated at'); ?></th>
@@ -184,7 +184,7 @@
                                             </td>
                                             <td>
                                                 <input type="number" style="width: 80px" id="price_<?php echo e($row->id); ?>"
-                                                    value="<?php echo e($row->gia); ?>" />
+                                                    value="<?php echo e($row->giakm); ?>" />
                                             </td>
                                             <td>
                                                 <input type="number" style="width: 80px" id="iorder_<?php echo e($row->id); ?>"

@@ -147,20 +147,12 @@
                                                             </div>
 
                                                             
-                                                                <div id="productSize">
-                                                                    <div class="option selected">
-                                                                      <div class="inner">S</div>
-                                                                    </div>
-                                                                    <div class="option">
-                                                                      <div class="inner">M</div>
-                                                                    </div>
-                                                                    <div class="option">
-                                                                      <div class="inner">L</div>
-                                                                    </div>
-                                                                    <div class="option">
-                                                                      <div class="inner">XL</div>
-                                                                    </div>
-                                                                  </div>
+                                                                <label for="size">Size:</label>
+                                                                <select name="size" id="size" >
+                                                                    <?php $__currentLoopData = App\Consts::SIZE_PRODUCT; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                    <option value=<?php echo e($key); ?>><?php echo e($item); ?></option>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                </select>
                                                                 <div class="quantity">
                                                                     <span>Số lượng</span>
                                                                     <div class="minus">-</div>
@@ -226,9 +218,9 @@
                         </div>
 
                         <?php echo $__env->make('frontend.element.menuleft', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
+                        
                         <?php echo $__env->make('frontend.element.spnoibat', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
+                        
                     </div>
                 </div>
             </div>
@@ -263,30 +255,66 @@
                                                                 ?>
                                                                 <div class="block col-sm-3 col-xs-6 col-mobile-12  ">
                                                                     <!-- Product -->
-                                                                    <div id="idpr_<?php echo e($item->id); ?>"
-                                                                        class="product product_wg clearfix product-hover">
+                                                                    <div id="idpr_<?php echo e($item->id); ?>" class="product product_wg clearfix product-hover">
                                                                         <div class="left">
                                                                             <div class="image ">
-                                                                                <a class="sss"
-                                                                                    href="<?php echo e($url_link); ?>"
-                                                                                    title="<?php echo e($title); ?>">
-                                                                                    <img src="<?php echo e($image); ?>"
-                                                                                        title="<?php echo e($title); ?>"
-                                                                                        alt="<?php echo e($title); ?>"
-                                                                                        class="">
+                                                                                <a class="sss" href="<?php echo e($url_link); ?>" title="<?php echo e($title); ?>">
+                                                                                    <img src="<?php echo e($image); ?>" title="<?php echo e($title); ?>" alt="<?php echo e($title); ?>" class="">
                                                                                 </a>
                                                                             </div>
                                                                         </div>
+                                                                        
                                                                         <div class="right">
-                                                                            <div class="name" style="height: 32px;">
-                                                                                <div
-                                                                                    class="label-discount green saleclear">
-                                                                                </div>
-                                                                                <a href="<?php echo e($url_link); ?>"
-                                                                                    title="<?php echo e($title); ?>"><?php echo e($title); ?></a>
+                                                                            <div class="name product-name" style="height: 48px;">
+                                                                                <div class="label-discount green saleclear"></div>
+                                                                                <a href="<?php echo e($url_link); ?>" title="<?php echo e($item->title); ?>"><?php echo e($item->title); ?></a>
                                                                             </div>
+                                                                            <p style="width: 100%;">
+                                                                                <?php if($item->giakm > 0){ ?>
+                                                                                <span class="product-price"><?php echo number_format($item->giakm, 0, ',', '.'); ?> </span>
+                                                                                <span class="money">đ</span>
+                                                                                <?php }else{ ?>
+                                                                                <span class="product-price"> Liên hệ </span>
+                                                                                <?php } ?>
+                                                                                <?php if($item->gia > 0){ ?>
+                                                                                <span class="product-price-km"><?php echo number_format($item->gia, 0, ',', '.'); ?> </span>
+                                                                                <span class="money">đ</span>
+                                                                                <?php } ?>
+                                                                            </p>
+                                                                            
+                                                                            <div class="shopping-cart" style="width: 20%; float: left; " onclick="addToCart(<?php echo e($item->id); ?>)">
+                                                                                <i class="fa-solid fa-shopping-cart"></i>
+                                                                            </div>
+                                                                            
+                                                                            <div class="edu-rating rating-default" style="width: 80%; float: left; ">
+                                                                                <div class="eduvibe-course-review-wrapper">
+                                                                                    <div class="review-stars-rated" title="5 out of 5 stars">
+                                                                                        <div class="review-star">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                                                                            </svg>
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                                                                            </svg>
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                                                                            </svg>
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                                                                            </svg>
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                                                                            </svg>
+                                                                                        </div>
+                                                        
+                                                                                    </div>
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                            
                                                                         </div>
                                                                     </div>
+                                                                    
                                                                 </div>
                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </div>
@@ -391,7 +419,9 @@
         function addCart() {
             var quantity = document.getElementById('quantity').value;
             var id = document.getElementById('product_id').value;
-            var f = "?quantity=" + quantity + "&id=" + id;
+            var size = document.getElementById('size').value;
+            var f = "?quantity=" + quantity + "&id=" + id+ "&size=" + size;
+            
             var _url = "/add-to-cart" + f;
 
             jQuery.ajax({
@@ -404,7 +434,7 @@
                     if (data == 1) {
                         alert('Số lượng còn lại không đủ để đặt hàng! Vui lòng chọn số lượng thấp hơn !');
                     } else {
-                        alert('Đặt hàng thành công');
+                        alert('Thêm vào giỏ hàng thành công');
                     }
                 }
             });
@@ -413,9 +443,11 @@
         function moveToCart() {
             var quantity = document.getElementById('quantity').value;
             var id = document.getElementById('product_id').value;
-            var f = "?quantity=" + quantity + "&id=" + id;
+            var size = document.getElementById('size').value;
+            var f = "?quantity=" + quantity + "&id=" + id+ "&size=" + size;
+            
             var _url = "/add-to-cart" + f;
-
+            
             jQuery.ajax({
                 type: "GET",
                 url: _url,
@@ -435,15 +467,16 @@
     </script>
 <?php $__env->stopSection(); ?>
 <style>
-#productSize {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
-  font-size: 16px;
+#size {
+    width: auto; /* Đảm bảo select chỉ có độ rộng cần thiết */
+    display: inline-block; /* Hiển thị select là một phần tử inline-block */
+    vertical-align: middle; /* Canh chỉnh theo chiều dọc */
 }
 
+#size option {
+    display: inline-block; /* Hiển thị option là một phần tử inline-block */
+    margin-right: 5px; /* Khoảng cách giữa các option */
+}
 .option {
   padding: 5px 15px;
   border-radius: 5px;

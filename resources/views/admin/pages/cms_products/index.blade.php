@@ -147,7 +147,7 @@
                                 <th>Ảnh</th>
                                 <th>@lang('Title')</th>
                                 <th>Danh mục</th>
-                                <th>Giá</th>
+                                <th>Giá bán</th>
                                 <th>@lang('Order')</th>
                                 <th>@lang('Tình trạng')</th>
                                 <th>@lang('Updated at')</th>
@@ -180,7 +180,7 @@
                                             </td>
                                             <td>
                                                 <input type="number" style="width: 80px" id="price_{{ $row->id }}"
-                                                    value="{{ $row->gia }}" />
+                                                    value="{{ $row->giakm }}" />
                                             </td>
                                             <td>
                                                 <input type="number" style="width: 80px" id="iorder_{{ $row->id }}"

@@ -43,15 +43,17 @@
                                             <th>Mã đơn hàng</th>
                                             <th>Ngày mua</th>
                                             <th>Tên sản phẩm</th>
+                                            <th>Size</th>
                                             <th>Số lượng</th>
                                             <th>Giá</th>
+                                            <th>Giảm giá</th>
                                             <th>Tổng đơn hàng</th>
                                             <th>Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $__currentLoopData = $details; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $detail): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <?php if($detail->orderDetails->count() > 1): ?>
+                                            <?php if($detail->orderDetails->count() > 0): ?>
                                                 <tr>
                                                     <td rowspan="<?php echo e($detail->orderDetails->count()); ?>">#<?php echo e($detail->id); ?>
 
@@ -63,23 +65,30 @@
                                                         <?php if($key > 0): ?>
                                                             </tr><tr>
                                                         <?php endif; ?>
+                                                        
                                                         <td><?php echo e($item->product->title); ?></td>
+                                                        <td><?php echo e($item->size); ?></td>
                                                         <td><?php echo e($item->quantity); ?></td>
                                                         <td><?php echo e($item->price); ?></td>
-                                                        <td><?php echo e($item->quantity * $item->price); ?></td>
+                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
+                                                       
+                                                        <td><?php echo e($detail->discount); ?></td>
+                                                        <td><?php echo e($detail->total_order); ?></td>
+
                                                         <td>
                                                             <?php $__currentLoopData = $order_detail_status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <?php echo e(isset($item->status) && $item->status == $key ? $status : ''); ?>
 
                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </td>
-                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                   
                                                 </tr>
                                             <?php else: ?>
                                                 <tr>
                                                     <td>#<?php echo e($detail->id); ?></td>
                                                     <td><?php echo e($detail->order_date); ?></td>
                                                     <td><?php echo e($detail->orderDetails->first()->product->title); ?></td>
+                                                    <td><?php echo e($detail->orderDetails->first()->size); ?></td>                                                    
                                                     <td><?php echo e($detail->orderDetails->first()->quantity); ?></td>
                                                     <td><?php echo e($detail->orderDetails->first()->price); ?></td>
                                                     <td><?php echo e($detail->orderDetails->first()->quantity * $detail->orderDetails->first()->price); ?>

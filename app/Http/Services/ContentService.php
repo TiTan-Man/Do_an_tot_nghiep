@@ -178,6 +178,12 @@ class ContentService
         return $query;
     }
 
+    public static function filterProductsByPriceAndCategory($params)
+    {
+        return CmsProduct::whereBetween('giakm', [$params['min_price'], $params['max_price']])
+            ->where('taxonomy_id', $params['category'])
+            ->paginate(10);
+    }
 
     public static function getOption()
     {
@@ -605,7 +611,48 @@ class ContentService
 
         return $query;
     }
+    public static function getOrders($params)
+    {
+        $query = Order::select('tb_orders.*')
+            // ->selectRaw("JSON_UNQUOTE(JSON_EXTRACT(tb_order_details.json_params, '$.post_link')) as post_link")
+            // ->leftJoin('tb_order_details', 'tb_order_details.order_id', '=', 'tb_orders.id')
+            ->when(!empty($params['keyword']), function ($query) use ($params) {
+                $keyword = $params['keyword'];
+                return $query->where(function ($where) use ($keyword) {
+                    return $where->where('tb_orders.name', 'like', '%' . $keyword . '%')
+                        ->orWhere('tb_orders.email', 'like', '%' . $keyword . '%')
+                        ->orWhere('tb_orders.phone', 'like', '%' . $keyword . '%');
+                });
+            })
+            ->when(!empty($params['is_type']), function ($query) use ($params) {
+                return $query->where('tb_orders.is_type', $params['is_type']);
+            })
+            ->when(!empty($params['status']), function ($query) use ($params) {
+                return $query->where('tb_orders.status', $params['status']);
+            })
+            ->when(!empty($params['id']), function ($query) use ($params) {
+                return $query->where('tb_orders.id', $params['id']);
+            })
+            ->when(!empty($params['created_at_from']), function ($query) use ($params) {
+                $query->where('tb_orders.created_at', '>=', $params['created_at_from']);
+            })
+            ->when(!empty($params['created_at_to']), function ($query) use ($params) {
+                $query->where('tb_orders.created_at', '<=', $params['created_at_to']);
+            });
+        if (!empty($params['order_by'])) {
+            if (is_array($params['order_by'])) {
+                foreach ($params['order_by'] as $key => $value) {
+                    $query->orderBy('tb_orders.' . $key, $value);
+                }
+            } else {
+                $query->orderByRaw('tb_orders.' . $params['order_by'] . ' desc');
+            }
+        } else {
+            $query->orderByRaw('tb_orders.id DESC, tb_orders.status ASC');
+        }
 
+        return $query;
+    }
     public static function getOrderService($params)
     {
         $query = Order::select('tb_orders.*')

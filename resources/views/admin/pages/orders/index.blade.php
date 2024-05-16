@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('admin.layouts.app')
 
 @section('title')
   {{ $module_name }}
@@ -9,7 +9,7 @@
   <section class="content-header">
     <h1>
       {{ $module_name }}
-      <a class="btn btn-sm btn-warning pull-right" href="{{ route(Request::segment(1) . '.create') }}"><i
+      <a class="btn btn-sm btn-warning pull-right" href="{{ route(Request::segment(2) . '.create') }}"><i
           class="fa fa-plus"></i> @lang('add_new')</a>
     </h1>
   </section>
@@ -28,7 +28,8 @@
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
       </div>
-      <form action="{{ route(Request::segment(1) . '.index') }}" method="GET">
+	  
+      <form action="{{ route(Request::segment(2) . '.index') }}" method="GET">
         <div class="box-body">
           <div class="row">
             <div class="col-md-3">
@@ -52,7 +53,7 @@
             <div class="col-md-7">
               <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-sm">@lang('search')</button>
-                <a class="btn btn-default btn-sm" href="{{ route(Request::segment(1) . '.index') }}">
+                <a class="btn btn-default btn-sm" href="{{ route(Request::segment(2) . '.index') }}">
                   @lang('reset')
                 </a>
               </div>
@@ -98,70 +99,74 @@
             @lang('not_found')
           </div>
         @else
-          <table class="table table-hover table-bordered">
-            <thead>
-              <tr>
-                <th>@lang('fullname')</th>
-                <th>@lang('email') / @lang('phone')</th>
-                <th>@lang('Order service')</th>
-                <th>Ghi chú khách hàng</th>
-                <th>Ghi chú Admin</th>
-                <th>@lang('updated_at')</th>
-                <th>@lang('status')</th>
-                <th>@lang('action')</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              @foreach ($rows as $row)
-                @if ($row->parent_id == 0 || $row->parent_id == null)
-                  <form action="{{ route(Request::segment(1) . '.destroy', $row->id) }}" method="POST"
-                    onsubmit="return confirm('@lang('confirm_action')')">
-                    <tr class="valign-middle">
-                      <td>
-                        <strong style="font-size: 14px;">{{ $row->name }}</strong>
-                      </td>
-                      <td>
-                        {{ $row->email }}
-                        <br>
-                        {{ $row->phone }}
-                      </td>
-                      <td>
-                        <a target="_blank" href="{{ $row->post_link }}">
-                          {{ $row->post_name }}
-                        </a>
-                      </td>
-                      <td>
-                        {{ Str::limit($row->customer_note, 200) }}
-                      </td>
-                      <td>
-                        {{ Str::limit($row->admin_note, 200) }}
-                      </td>
-                      <td>
-                        {{ $row->updated_at }}
-                      </td>
-                      <td>
-                        @lang($row->status)
-                      </td>
-                      <td>
-                        <a class="btn btn-sm btn-warning" data-toggle="tooltip" title="@lang('view')"
-                          data-original-title="@lang('view')"
-                          href="{{ route(Request::segment(1) . '.show', $row->id) }}">
-                          <i class="fa fa-pencil-square-o"></i>
-                        </a>
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger" type="submit" data-toggle="tooltip" title="@lang('delete')"
-                          data-original-title="@lang('delete')">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </form>
-                @endif
-              @endforeach
-            </tbody>
-          </table>
+			<table class="table table-hover table-bordered">
+				<thead>
+				  <tr>
+					<th>STT</th>
+					<th>Thông tin đơn hàng</th>
+					<th>YC xuất VAT</th>
+					<th>Giá trị</th>
+					<th>Loại đơn</th>
+					<th>Thanh toán</th>
+					<th>@lang('status')</th>
+					<th>@lang('action')</th>
+				  </tr>
+				</thead>
+				<tbody>
+					<?php
+					$stt = 0;
+					foreach ($rows as $row){ $stt ++;
+					?>
+					  <form action="{{ route(Request::segment(2) . '.destroy', $row->id) }}" method="POST"
+						onsubmit="return confirm('@lang('confirm_action')')">
+						<tr class="valign-middle">
+							<td>
+							{{ $stt }}
+							</td>
+							<td>
+								<a href="javascript:;">{{ $row->trans_code }}</a><br>
+								<a href="javascript:;">{{ $row->name }}</a><br>
+								<span>Ngày tạo: {{ date('d/m/Y H:i',strtotime( $row->created_at)) }}</span>
+							</td>
+							<td>
+								
+							</td>
+							<td>
+							<span class="nowrap">Tổng tiền: <b>{{ number_format ($row->total_order) }}</b></span><br>
+							<span class="nowrap">Thanh toán: <b style="color:brown">{{ number_format ($row->payment) }}</b></span>
+							</td>
+							<td>
+							
+							</td>
+							<td>
+							{{-- {{ $array_payment_method[$row->payment_method] }}<br> --}}
+							{{-- <span class="badge badge-soft-secondary">{{ $array_payment_staus[$row->payment_status] }}</span> --}}
+							</td>
+							<td>
+                @foreach (App\Consts::ORDER_STATUS as $key => $item)
+                    {{ $row->status == $key ? $item : '' }}
+                @endforeach
+							</td>
+							
+						  <td>
+							<a class="btn btn-sm btn-warning" data-toggle="tooltip" title="@lang('view')"
+							  data-original-title="@lang('view')"
+							  href="{{ route(Request::segment(2) . '.edit', $row->id) }}">
+							  <i class="fa fa-pencil-square-o"></i>
+							</a>
+							@csrf
+							@method('DELETE')
+							<button class="btn btn-sm btn-danger" type="submit" data-toggle="tooltip" title="@lang('delete')"
+							  data-original-title="@lang('delete')">
+							  <i class="fa fa-trash"></i>
+							</button>
+						  </td>
+						</tr>
+					  </form>
+					
+					<?php } ?>
+				</tbody>
+			</table>
         @endif
       </div>
 
@@ -171,7 +176,7 @@
             Tìm thấy {{ $rows->total() }} kết quả
           </div>
           <div class="col-sm-7">
-            {{ $rows->withQueryString()->links('pagination.default') }}
+            {{ $rows->withQueryString()->links('admin.pagination.default') }}
           </div>
         </div>
       </div>

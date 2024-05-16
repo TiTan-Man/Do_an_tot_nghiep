@@ -6,7 +6,6 @@
 $params['hienthi'] = 0;
 $sanphamnoibat = App\Http\Services\ContentService::getProducts($params)->get();
 
-
 foreach($taxonomy_all as $taxonomy){
 $hienthi = trim($taxonomy->hienthi,';');
 $vitrihienthi = explode(';',$hienthi); // chuyển về mảng
@@ -16,7 +15,6 @@ if(in_array('3',$vitrihienthi)){
 	$key = 0;
 ?>
 <ul class="nav nav-pills">
-	
 	<li class="active"><a data-toggle="pill" href="#category_<?php echo e($taxonomy->id); ?>"><?php echo e($taxonomy->title); ?></a></li>
 	<?php 
 	$i=0;
@@ -65,23 +63,20 @@ if(in_array('3',$vitrihienthi)){
 										<a href="<?php echo e($url_link); ?>" title="<?php echo e($spnoibat->title); ?>"><?php echo e($spnoibat->title); ?></a>
 									</div>
 									<p style="width: 100%;">
-										<?php if($spnoibat->gia > 0){ ?>
+										<?php if($spnoibat->giakm > 0){ ?>
 										<span class="product-price"><?php echo number_format($spnoibat->giakm, 0, ',', '.'); ?> </span>
 										<span class="money">đ</span>
 										<?php }else{ ?>
 										<span class="product-price"> Liên hệ </span>
 										<?php } ?>
-										<?php if($spnoibat->giakm > 0){ ?>
+										<?php if($spnoibat->gia > 0){ ?>
 										<span class="product-price-km"><?php echo number_format($spnoibat->gia, 0, ',', '.'); ?> </span>
 										<span class="money">đ</span>
 										<?php } ?>
 									</p>
 									
-									<div class="shopping-cart" style="width: 20%; float: left; " onclick="addToCart(<?php echo e($spnoibat->id); ?>)">
-										<i class="fa-solid fa-shopping-cart"></i>
-									</div>
 									
-									<div class="edu-rating rating-default" style="width: 80%; float: left; ">
+									<div class="edu-rating rating-default" style="width: 100%; float: left; ">
 										<div class="eduvibe-course-review-wrapper">
 											<div class="review-stars-rated" title="5 out of 5 stars">
 												<div class="review-star">
@@ -163,13 +158,13 @@ if(in_array('3',$vitrihienthi)){
 								</div>
 								<p style="width: 100%;">
 									<?php if($spnoibat->gia > 0){ ?>
-									<span class="product-price"><?php echo number_format($spnoibat->giakm, 0, ',', '.'); ?> </span>
+									<span class="product-price"><?php echo number_format($spnoibat->gia, 0, ',', '.'); ?> </span>
 									<span class="money">đ</span>
 									<?php }else{ ?>
 									<span class="product-price"> Liên hệ </span>
 									<?php } ?>
 									<?php if($spnoibat->giakm > 0){ ?>
-									<span class="product-price-km"><?php echo number_format($spnoibat->gia, 0, ',', '.'); ?> </span>
+									<span class="product-price-km"><?php echo number_format($spnoibat->giakm, 0, ',', '.'); ?> </span>
 									<span class="money">đ</span>
 									<?php } ?>
 								</p>

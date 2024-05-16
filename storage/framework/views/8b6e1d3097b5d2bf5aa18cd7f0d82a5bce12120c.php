@@ -206,9 +206,6 @@
     li.with-sub-menu:after {
         color: #000000;
     }
-    .button-search{
-        background-color: #ffffff !important;
-        color: : #000000 !important;
-    }
+    
 </style>
 <?php /**PATH D:\SAVE\do_an\TopFashion\public_html\resources\views/frontend/element/menumain.blade.php ENDPATH**/ ?>

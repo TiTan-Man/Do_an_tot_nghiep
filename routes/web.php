@@ -57,7 +57,7 @@ Route::namespace('FrontEnd')->group(function () {
   Route::post('tim-kiem', 'CmsController@productSearch')->name('frontend.cms.product_search');
   Route::get('san-pham/{alias}', 'CmsController@productCategory')->name('frontend.cms.product_category');
   Route::get('chi-tiet-sp/{alias_detail}', 'CmsController@product')->name('frontend.cms.product');
-
+  Route::get('/products/filter', 'CmsController@filterByPrice')->name('products.filter');
   // Bài viết giới thiệu
   Route::get('gioi-thieu/{alias}', 'CmsController@postIntroduction')->name('frontend.cms.post_introduction');
 
@@ -73,12 +73,13 @@ Route::namespace('FrontEnd')->group(function () {
   Route::get('gio-hang', 'OrderController@cart')->name('frontend.order.cart');
   Route::get('update-cart', 'OrderController@updateCart')->name('frontend.order.cart.update');
   Route::get('remove-from-cart', 'OrderController@removeCart')->name('frontend.order.cart.remove');
+  Route::get('check-voucher', 'OrderController@checkVoucher')->name('frontend.order.cart.check');
   Route::post('order-product', 'OrderController@storeOrderProduct')->name('frontend.order.store.product');
+
   // Theo dõi đơn hàng
   Route::get('order-tracking', 'OrderController@orderTracking')->name('frontend.order.tracking');
 
   Route::get('/{alias}', 'PageController@index')->name('frontend.page');
-
 
   Route::group(['prefix' => 'user', 'middleware' => ['auth:web']], function () {
 
@@ -87,6 +88,7 @@ Route::namespace('FrontEnd')->group(function () {
     Route::post('comment', 'CommentController@store')->name('frontend.comment.store');
     Route::post('addnew', 'CmsController@addnew')->name('frontend.post.addnew');
     Route::get('/logout', 'LoginController@logout')->name('frontend.logout');
+    
   });
 
   Route::get('/route-cache', function () {
@@ -97,4 +99,8 @@ Route::namespace('FrontEnd')->group(function () {
     \Artisan::call('cache:clear');
     return 'Application cache cleared';
   });
+  Route::get('/clear-session', function () {
+    Session::flush();
+    return "Session đã được xóa.";
+});
 });

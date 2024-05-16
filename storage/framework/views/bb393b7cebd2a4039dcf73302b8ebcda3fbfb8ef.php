@@ -9,8 +9,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      <?php echo e($module_name); ?>
-
+      Quản lý đơn hàng
     </h1>
   </section>
   <!-- Main content -->
@@ -44,13 +43,13 @@
           <?php echo method_field('PUT'); ?>
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="profile-username"><?php echo app('translator')->get('Order number'); ?> #<?php echo e($detail->id); ?></h3>
+              <h3 class="profile-username"><?php echo app('translator')->get('Đơn hàng số'); ?> #<?php echo e($detail->id); ?></h3>
               <p class="text-muted"><?php echo e(__('Created at')); ?>: <?php echo e($detail->created_at); ?></p>
             </div>
             <div class="box-body">
               <div class="form-horizontal">
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Fullname'); ?>:</label>
+                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Họ và tên'); ?>:</label>
                   <label class="col-sm-9 col-xs-12"><?php echo e($detail->name ?? ''); ?></label>
                 </div>
 
@@ -62,24 +61,24 @@
                   </label>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Phone'); ?>:</label>
+                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('SĐT'); ?>:</label>
                   <label class="col-sm-9 col-xs-12">
                     <?php echo e($detail->phone ?? ''); ?>
 
                   </label>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Address'); ?>:</label>
+                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Địa chỉ'); ?>:</label>
                   <label class="col-sm-9 col-xs-12"><?php echo e($detail->address ?? ''); ?></label>
                 </div>
 
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Content note'); ?>:</label>
+                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Ghi chú'); ?>:</label>
                   <label class="col-sm-9 col-xs-12"><?php echo e($detail->customer_note ?? ''); ?></label>
                 </div>
 
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Status'); ?>:</label>
+                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Trạng thái'); ?>:</label>
                   <div class="col-sm-9 col-xs-12 ">
                     <?php $__currentLoopData = App\Consts::ORDER_DETAIL_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                       <label>
@@ -91,7 +90,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Admin note'); ?>:</label>
+                  <label class="col-sm-3 text-right text-bold"><?php echo app('translator')->get('Admin ghi chú'); ?>:</label>
                   <div class="col-md-9 col-xs-12">
                     <textarea name="admin_note" class="form-control" rows="5"><?php echo e($detail->admin_note ?? old('admin_note')); ?></textarea>
                   </div>
@@ -114,18 +113,19 @@
       <div class="col-md-7">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title"><?php echo app('translator')->get('Order product detail'); ?></h3>
+            <h3 class="box-title"><?php echo app('translator')->get('Chi tiết đơn hàng'); ?></h3>
           </div>
 
           <div class="box-body">
             <table class="table table-hover table-bordered">
               <thead>
                 <tr>
-                  <th><?php echo app('translator')->get('#'); ?></th>
-                  <th><?php echo app('translator')->get('Product'); ?></th>
-                  <th><?php echo app('translator')->get('Price'); ?></th>
-                  <th><?php echo app('translator')->get('Quantity'); ?></th>
-                  <th><?php echo app('translator')->get('Total'); ?></th>
+                  <th><?php echo app('translator')->get('STT'); ?></th>
+                  <th><?php echo app('translator')->get('Sản phẩm'); ?></th>
+                  <th><?php echo app('translator')->get('Giá'); ?></th>
+                  <th><?php echo app('translator')->get('Size'); ?></th>
+                  <th><?php echo app('translator')->get('Số lượng'); ?></th>
+                  <th><?php echo app('translator')->get('Tổng tiền'); ?></th>
                   <th><?php echo app('translator')->get('Action'); ?></th>
                 </tr>
               </thead>

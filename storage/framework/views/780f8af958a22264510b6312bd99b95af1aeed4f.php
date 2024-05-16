@@ -17,6 +17,4 @@
 		
     </div>
 	
-</div>
-
-<?php /**PATH D:\SAVE\do_an\TopFashion\public_html\resources\views/frontend/element/menuleft.blade.php ENDPATH**/ ?>
+</div><?php /**PATH D:\SAVE\do_an\TopFashion\public_html\resources\views/frontend/element/menuleft.blade.php ENDPATH**/ ?>

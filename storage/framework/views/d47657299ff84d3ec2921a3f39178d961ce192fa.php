@@ -6,7 +6,9 @@ $seo_title = $taxonomy->meta_title ?? $title;
 $seo_keyword = $taxonomy->meta_keyword ?? null;
 $seo_description = $taxonomy->meta_description ?? null;
 $seo_image = $image ?? null;
-
+$taxonomy_id = $taxonomy->id ?? null;
+$listSearch = App\Http\Services\ContentService::getSearch(['status'=>'true'])->get();
+$searchDetail = App\Http\Services\ContentService::getSearchDetail(['status'=>'true'])->get();
 ?>
 
 <?php $__env->startSection('content'); ?>
@@ -43,7 +45,68 @@ $seo_image = $image ?? null;
 				<div class="pattern">
 					<div class="container">
 						<div class="row">
-							<?php echo $__env->make('frontend.element.menuleft2', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+							<div class="col-md-3 hidden-xs hidden-sm" id="column_left">
+								<div class="hst fadeIn">
+									<section class="box-category">
+										<div class="heading">
+											<span>Danh mục</span>
+										</div>
+										<div class="list-group panelvmenu">
+											<?php foreach($taxonomy_all as $taxonomy){
+												$hienthi = trim($taxonomy->hienthi,';');
+												$vitrihienthi = explode(';',$hienthi); // chuyển về mảng
+												if(in_array(1,$vitrihienthi)){?>
+												<a href="/<?php echo e($taxonomy->taxonomy); ?>/<?php echo e($taxonomy->url_part); ?>.html" class="list-group-item-vmenu" title="<?php echo e($taxonomy->title); ?>" ><?php echo e($taxonomy->title); ?></a>
+											<?php } } ?>
+										</div>
+									</section>
+									
+								</div>
+								
+								<div class="panel-group" id="accordion">
+									
+									<div class="panel panel-default">
+										<div class="panel-heading">
+										  <h4 class="panel-title">
+											Mức giá
+										  </h4>
+										</div>
+										<div >
+										  	<div class="panel-body">
+												<form action="<?php echo e(route('products.filter')); ?>" method="GET">
+													<div style="margin-bottom:20px">
+														<input type="hidden" name="category" value="<?php echo e($taxonomy_id); ?>" id="category">
+														<label for="min_price">Giá nhỏ nhất:</label>
+														<select name="min_price" id="min_price">
+															<option value="0">0</option>
+															<option value="100000">100.000đ</option>
+															<option value="300000">300.000đ</option>
+															<option value="500000">500.000đ</option>														
+															<!-- Thêm các option khác tùy theo nhu cầu của bạn -->
+														</select>	
+													</div>
+													<div style="margin-bottom:20px">
+														<label for="max_price">Giá lớn nhất:</label>
+														<select name="max_price" id="max_price">
+															<option value="100000">100.000đ</option>
+															<option value="300000">300.000đ</option>
+															<option value="500000">500.000đ</option>	
+															<option value="1000000">1.000.000đ</option>
+															<!-- Thêm các option khác tùy theo nhu cầu của bạn -->
+														</select>	
+													</div>
+													
+												
+													<button type="submit">Filter</button>
+												</form>
+																							
+										  	</div>
+										</div>
+									</div>
+									
+								</div>
+								
+							</div>
 							<div class="col-md-9 padding-left-0">
 								
 								<div class="box-content products">
@@ -73,23 +136,23 @@ $seo_image = $image ?? null;
 																			<a href="<?php echo e($url_link); ?>" title="<?php echo e($spnoibat->title); ?>"><?php echo e($spnoibat->title); ?></a>
 																		</div>
 																		<p style="width: 100%;">
-																			<?php if($spnoibat->gia > 0){ ?>
-																			<span class="product-price"><?php echo number_format($spnoibat->gia, 0, ',', '.'); ?> </span>
+																			<?php if($spnoibat->giakm > 0){ ?>
+																			<span class="product-price"><?php echo number_format($spnoibat->giakm, 0, ',', '.'); ?> </span>
 																			<span class="money">đ</span>
 																			<?php }else{ ?>
 																			<span class="product-price"> Liên hệ </span>
 																			<?php } ?>
-																			<?php if($spnoibat->giakm > 0){ ?>
-																			<span class="product-price-km"><?php echo number_format($spnoibat->giakm, 0, ',', '.'); ?> </span>
+																			<?php if($spnoibat->gia > 0){ ?>
+																			<span class="product-price-km"><?php echo number_format($spnoibat->gia, 0, ',', '.'); ?> </span>
 																			<span class="money">đ</span>
 																			<?php } ?>
 																		</p>
 																		
 																		<div class="shopping-cart" style="width: 20%; float: left; " onclick="addToCart(<?php echo e($spnoibat->id); ?>)">
-																			<i class="fa-solid fa-shopping-cart"></i>
+																			
 																		</div>
 																		
-																		<div class="edu-rating rating-default" style="width: 80%; float: left; ">
+																		<div class="edu-rating rating-default" style="width: 100%; float: left; ">
 																			<div class="eduvibe-course-review-wrapper">
 																				<div class="review-stars-rated" title="5 out of 5 stars">
 																					<div class="review-star">
@@ -143,6 +206,9 @@ $seo_image = $image ?? null;
 			</div>
 		</div>
     </section>
+	<style>
+		.panel-body{}
+	</style>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('frontend.layouts.default', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\SAVE\do_an\TopFashion\public_html\resources\views/frontend/pages/product/category.blade.php ENDPATH**/ ?>

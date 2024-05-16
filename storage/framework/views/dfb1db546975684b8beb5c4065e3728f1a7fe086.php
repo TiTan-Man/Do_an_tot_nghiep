@@ -9,8 +9,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <?php echo e($module_name); ?>
-
+            Quản lý đơn hàng
         </h1>
     </section>
 <?php $__env->stopSection(); ?>
@@ -126,13 +125,14 @@
                             <tr>
                                 <th>Order ID</th>
                                 <th><?php echo app('translator')->get('Họ tên'); ?></th>
-                                <th><?php echo app('translator')->get('Email'); ?></th>
+                            
                                 <th><?php echo app('translator')->get('Số điện thoại'); ?></th>
+                                <th><?php echo app('translator')->get('Tên sp'); ?></th>
+                                <th><?php echo app('translator')->get('Size'); ?></th>
                                 <th><?php echo app('translator')->get('Số lượng'); ?></th>
                                 <th><?php echo app('translator')->get('Tạm tính'); ?></th>
                                 
                                 <th><?php echo app('translator')->get('Ghi chú'); ?></th>
-                                <th><?php echo app('translator')->get('Admin note'); ?></th>
                                 <th><?php echo app('translator')->get('Ngày tạo'); ?></th>
                                 <th><?php echo app('translator')->get('Trạng thái'); ?></th>
                                 <th><?php echo app('translator')->get('Thao tác'); ?></th>
@@ -153,15 +153,19 @@
                                             <td>
                                                 <strong style="font-size: 14px;"><?php echo e($row->name); ?></strong>
                                             </td>
-                                            <td>
-                                                <?php echo e($row->email); ?>
-
-                                            </td>
+                                            
                                             <td>
                                                 <?php echo e($row->phone); ?>
 
                                             </td>
+                                            <td>
+                                                <?php echo e($item->product->title); ?>
 
+                                            </td>
+                                            <td>
+                                                <?php echo e($item->size); ?>
+
+                                            </td>
                                             <td><?php echo e($item->quantity); ?></td>
                                             <td><?php echo e(number_format($item->quantity * $item->price)); ?></td>
                                             
@@ -169,10 +173,7 @@
                                                 <?php echo e(Str::limit($row->customer_note, 200)); ?>
 
                                             </td>
-                                            <td>
-                                                <?php echo e(Str::limit($row->admin_note, 200)); ?>
-
-                                            </td>
+                                            
                                             <td>
                                                 <?php echo e(isset($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->format('d/m/Y') : ''); ?>
 

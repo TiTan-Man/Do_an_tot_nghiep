@@ -72,6 +72,7 @@ Route::group(['namespace' => 'Admin'], function () {
 			// 'cms_translate' => 'CmsTranslateController',
             'search' => 'SearchController',
             'search_detail' => 'SearchDetailController',
+            'orders'=> 'OrderController',
         ]);
         Route::post('cms_product_save_ajax', 'CmsProductController@saveAjax')->name('cms_product.save_ajax');
         

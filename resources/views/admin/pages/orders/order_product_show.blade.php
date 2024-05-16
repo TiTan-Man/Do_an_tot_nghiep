@@ -8,7 +8,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      {{ $module_name }}
+      Quản lý đơn hàng
     </h1>
   </section>
   <!-- Main content -->
@@ -40,13 +40,13 @@
           @method('PUT')
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="profile-username">@lang('Order number') #{{ $detail->id }}</h3>
+              <h3 class="profile-username">@lang('Đơn hàng số') #{{ $detail->id }}</h3>
               <p class="text-muted">{{ __('Created at') }}: {{ $detail->created_at }}</p>
             </div>
             <div class="box-body">
               <div class="form-horizontal">
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Fullname'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Họ và tên'):</label>
                   <label class="col-sm-9 col-xs-12">{{ $detail->name ?? '' }}</label>
                 </div>
 
@@ -57,23 +57,23 @@
                   </label>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Phone'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('SĐT'):</label>
                   <label class="col-sm-9 col-xs-12">
                     {{ $detail->phone ?? '' }}
                   </label>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Address'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Địa chỉ'):</label>
                   <label class="col-sm-9 col-xs-12">{{ $detail->address ?? '' }}</label>
                 </div>
 
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Content note'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Ghi chú'):</label>
                   <label class="col-sm-9 col-xs-12">{{ $detail->customer_note ?? '' }}</label>
                 </div>
 
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Status'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Trạng thái'):</label>
                   <div class="col-sm-9 col-xs-12 ">
                     @foreach (App\Consts::ORDER_DETAIL_STATUS as $key => $value)
                       <label>
@@ -85,7 +85,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Admin note'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Admin ghi chú'):</label>
                   <div class="col-md-9 col-xs-12">
                     <textarea name="admin_note" class="form-control" rows="5">{{ $detail->admin_note ?? old('admin_note') }}</textarea>
                   </div>
@@ -108,18 +108,19 @@
       <div class="col-md-7">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">@lang('Order product detail')</h3>
+            <h3 class="box-title">@lang('Chi tiết đơn hàng')</h3>
           </div>
 
           <div class="box-body">
             <table class="table table-hover table-bordered">
               <thead>
                 <tr>
-                  <th>@lang('#')</th>
-                  <th>@lang('Product')</th>
-                  <th>@lang('Price')</th>
-                  <th>@lang('Quantity')</th>
-                  <th>@lang('Total')</th>
+                  <th>@lang('STT')</th>
+                  <th>@lang('Sản phẩm')</th>
+                  <th>@lang('Giá')</th>
+                  <th>@lang('Size')</th>
+                  <th>@lang('Số lượng')</th>
+                  <th>@lang('Tổng tiền')</th>
                   <th>@lang('Action')</th>
                 </tr>
               </thead>

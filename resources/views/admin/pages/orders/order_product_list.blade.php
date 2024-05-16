@@ -8,7 +8,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            {{ $module_name }}
+            Quản lý đơn hàng
         </h1>
     </section>
 @endsection
@@ -122,13 +122,14 @@
                             <tr>
                                 <th>Order ID</th>
                                 <th>@lang('Họ tên')</th>
-                                <th>@lang('Email')</th>
+                            
                                 <th>@lang('Số điện thoại')</th>
+                                <th>@lang('Tên sp')</th>
+                                <th>@lang('Size')</th>
                                 <th>@lang('Số lượng')</th>
                                 <th>@lang('Tạm tính')</th>
                                 {{-- <th>@lang('Tổng tiền')</th> --}}
                                 <th>@lang('Ghi chú')</th>
-                                <th>@lang('Admin note')</th>
                                 <th>@lang('Ngày tạo')</th>
                                 <th>@lang('Trạng thái')</th>
                                 <th>@lang('Thao tác')</th>
@@ -148,13 +149,16 @@
                                             <td>
                                                 <strong style="font-size: 14px;">{{ $row->name }}</strong>
                                             </td>
-                                            <td>
-                                                {{ $row->email }}
-                                            </td>
+                                            
                                             <td>
                                                 {{ $row->phone }}
                                             </td>
-
+                                            <td>
+                                                {{ $item->product->title }}
+                                            </td>
+                                            <td>
+                                                {{ $item->size }}
+                                            </td>
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ number_format($item->quantity * $item->price) }}</td>
                                             {{-- <td>
@@ -163,9 +167,7 @@
                                             <td>
                                                 {{ Str::limit($row->customer_note, 200) }}
                                             </td>
-                                            <td>
-                                                {{ Str::limit($row->admin_note, 200) }}
-                                            </td>
+                                            
                                             <td>
                                                 {{ isset($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->format('d/m/Y') : '' }}
                                             </td>

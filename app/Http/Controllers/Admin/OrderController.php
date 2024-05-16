@@ -17,6 +17,34 @@ class OrderController extends Controller
         $this->routeDefault  = 'orders';
         $this->viewPart = 'admin.pages.orders';
         $this->responseData['module_name'] = __('Order Management');
+		$this->responseData['array_payment_method'] = array(0=>'COD',1=>'Ví',2=>'Chuyển khoản',3=>'VNPAY',4=>'Viettel money');
+		$this->responseData['array_payment_staus'] = array(0=>'Chưa thanh toán',1=>'Đã thanh toán');
+	}
+
+	public function index(Request $request)
+    {
+		if(ContentService::checkRole($this->routeDefault,'index') == 0){
+			$this->responseData['module_name'] = __('Bạn không có quyền truy cập chức năng này');
+			return $this->responseView($this->viewPart . '.404');
+		}
+		
+		$params = $request->all();
+		
+		$rows = ContentService::getOrders($params)->paginate(Consts::DEFAULT_PAGINATE_LIMIT);
+		$this->responseData['rows'] = $rows;
+		// dd($rows );
+		return $this->responseView($this->viewPart . '.index');
+    }
+
+    public function edit(Order $order)
+    {
+		$this->responseData['module_name'] = __('Order Product Management');
+        $this->responseData['detail'] = $order;
+
+        $rows = ContentService::getOrderDetail(['order_id'=> $order->id])->get();
+        dd($rows);
+        $this->responseData['rows'] = $rows;
+        return $this->responseView($this->viewPart . '.edit');
     }
 
     /**
@@ -52,91 +80,9 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        $order->delete();
-
+        $order->status = 'reject';
+        $order->save();
+        
         return redirect()->back()->with('successMessage', __('Delete record successfully!'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function listOrderService(Request $request)
-    {
-        $this->responseData['module_name'] = __('Service booking Management');
-
-        $params = $request->all();
-        $this->responseData['params'] = $params;
-        $params['is_type'] = Consts::ORDER_TYPE['service'];
-        if (isset($params['created_at_from'])) {
-            $params['created_at_from'] = Carbon::createFromFormat('d/m/Y', $params['created_at_from'])->format('Y-m-d');
-        }
-        if (isset($params['created_at_to'])) {
-            $params['created_at_to'] = Carbon::createFromFormat('d/m/Y', $params['created_at_to'])->addDays(1)->format('Y-m-d');
-        }
-        $rows = ContentService::getOrderService($params)->paginate(Consts::DEFAULT_PAGINATE_LIMIT);
-        $this->responseData['rows'] =  $rows;
-
-        return $this->responseView($this->viewPart . '.order_service_list');
-    }
-
-    public function showOrderService(Order $order)
-    {
-        $this->responseData['module_name'] = __('Service booking Management');
-
-        $params['id'] = $order->id;
-        $this->responseData['detail'] = ContentService::getOrderService($params)->first();
-
-        return $this->responseView($this->viewPart . '.order_service_show');
-    }
-
-    public function listOrderProduct(Request $request)
-    {
-        $this->responseData['module_name'] = __('Order Product Management');
-
-        $params = $request->all();
-        $this->responseData['params'] = $params;
-        $params['is_type'] = Consts::ORDER_TYPE['product'];
-        if (isset($params['created_at_from'])) {
-            $params['created_at_from'] = Carbon::createFromFormat('d/m/Y', $params['created_at_from'])->format('Y-m-d');
-        }
-        if (isset($params['created_at_to'])) {
-            $params['created_at_to'] = Carbon::createFromFormat('d/m/Y', $params['created_at_to'])->addDays(1)->format('Y-m-d');
-        }
-        $rows = ContentService::getOrderProduct($params)->paginate(Consts::DEFAULT_PAGINATE_LIMIT);
-        $this->responseData['rows'] =  $rows;
-
-        return $this->responseView($this->viewPart . '.order_product_list');
-    }
-
-    public function showOrderProduct(Order $order)
-    {
-        $this->responseData['module_name'] = __('Order Product Management');
-        $this->responseData['detail'] = $order;
-
-        $params['order_id'] = $order->id;
-        $this->responseData['rows'] = ContentService::getOrderDetail($params)->get();
-
-        return $this->responseView($this->viewPart . '.order_product_show');
-    }
-
-    public function updateStatus(Request $request) {
-        if(ContentService::checkRole($this->routeDefault,'update') == 0){
-            $this->responseData['module_name'] = __('Bạn không có quyền truy cập chức năng này');
-            return $this->responseView($this->viewPart . '.404');
-        }
-
-        $status = $request->status;
-        $id = $request->id;
-
-        $orderDetail = OrderDetail::find($id);
-
-        if($orderDetail) {
-            $orderDetail->status = $status;
-            $orderDetail->save();
-        }
-
-        return $id;
     }
 }

@@ -3,7 +3,7 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('content'); ?>
+<?php $__env->startSection('content'); ?> 
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>

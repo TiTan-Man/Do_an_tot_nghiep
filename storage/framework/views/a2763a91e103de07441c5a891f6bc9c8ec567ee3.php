@@ -1,6 +1,6 @@
 <?php 
 // Sản phẩm flash sale
-$sanPhamNoiBatTrangTrong = App\Models\CmsProduct::danhSachSanPham($param = array('hienthi'=>'2'))->get();
+$sanPhamNoiBatTrangTrong = App\Models\CmsProduct::danhSachSanPham($param = array('hienthi'=>'2'))->paginate(5);
 ?>
 
 <div class="col-md-3 pull-right" id="column-left">

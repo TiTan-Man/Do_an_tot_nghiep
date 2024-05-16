@@ -5,14 +5,13 @@
     $image_background =
         $taxonomy->json_params->image_background ?? ($web_information->image->background_breadcrumbs ?? '');
 
-    // dd(session('cart'));
+    //  dd(session('cart'));
 ?>
 
 
 
 <?php $__env->startSection('content'); ?>
     <section id="content">
-
         <div class="breadcrumb full-width">
             <div class="background-breadcrumb"></div>
             <div class="background">
@@ -67,6 +66,14 @@
                         <?php if(session('cart')): ?>
                             <div class="row">
                                 <div class="col-md-7 border-right">
+                                    <form id="orderForm" action="/submit-order" method="post">
+                                        <!-- Container bao bọc ô nhập và nút submit -->
+                                        <div id="voucherContainer">
+                                            <label for="voucher">Voucher:</label>
+                                            <input type="text" id="voucher" name="voucher" placeholder="Nhập mã voucher của bạn">
+                                            <button type="button" id="checkVoucher">Kiểm tra và áp dụng</button>
+                                        </div>
+                                    </form>
                                     <h3>Giỏ hàng</h3>
                                     <table class="table">
                                         <thead>
@@ -74,51 +81,60 @@
                                                 <th scope="col">Hình ảnh</th>
                                                 <th scope="col">Tên sản phẩm</th>
                                                 <th scope="col">Giá</th>
+                                                <th scope="col">Size</th>
                                                 <th scope="col">Số lượng</th>
                                                 <th scope="col">Tổng</th>
                                                 <th scope="col">Xóa</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
-                                            <?php $total = 0 ?>
+                                            <?php $total = 0; $discount =0 ?>
                                             <?php $__currentLoopData = session('cart'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $details): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <?php
-                                                    $total += $details['price'] * $details['quantity'];
-                                                    $alias_detail = Str::slug($details['title']);
-                                                    $url_link =
+                                                    if(isset($details['price']) && isset($details['quantity']) && isset($details['discount'])){
+                                                        $total += $details['price'] * $details['quantity'] - $details['discount'];
+                                                    }elseif (isset($details['price']) && isset($details['quantity'])) {
+                                                        $total += $details['price'] * $details['quantity'];   
+                                                    }
+                                                    if(isset($details['title'])){
+                                                       $alias_detail = Str::slug($details['title']); 
+                                                       $url_link =
                                                         route('frontend.cms.product', [
                                                             'alias_detail' => $alias_detail,
                                                         ]) . '.html';
+                                                    }
                                                 ?>
                                                 <tr class="tr-border cart-item" data-product-id="<?php echo e($id); ?>">
                                                     <td>
-                                                        <a href="<?php echo e($url_link); ?>">
-                                                            <img src="<?php echo e($details['image_thumb'] ?? $details['image']); ?>"
+                                                        <a href="<?php echo e($url_link ?? ''); ?>">
+                                                            <img src="<?php echo e($details['image'] ?? ''); ?>"
                                                                 alt="Product Image" style="width: 70px; height:70px;">
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a href="<?php echo e($url_link); ?>">
-                                                            <span><?php echo e($details['title']); ?></span>
+                                                        <a href="<?php echo e($url_link ?? ''); ?>">
+                                                            <span><?php echo e($details['title'] ?? ''); ?></span>
                                                         </a>
                                                     </td>
                                                     <td><span class="cart-price">
                                                             <?php echo e(isset($details['price']) && $details['price'] > 0 ? number_format($details['price']) : __('Contact')); ?>&#8363;
                                                         </span>
                                                     </td>
+                                                    <td>
+                                                        <div><?php echo e($details['size'] ?? ''); ?></div>
+                                                    </td>
                                                     <td class="class-quantity">
                                                         <button class="minus">-</button>
                                                         <input type="number" class="quantity-input" min="1"
                                                             max="999" step="1" name="quantity"
                                                             id="quantity<?php echo e($id); ?>"
-                                                            value="<?php echo e($details['quantity']); ?>"
+                                                            value="<?php echo e($details['quantity'] ?? 1); ?>"
                                                             onchange="updateCart(<?php echo e($id); ?>)">
                                                         <button class="plus">+</button>
                                                     </td>
                                                     <td>
                                                         <span class="price" id="price<?php echo e($id); ?>">
-                                                            <?php echo e(number_format($details['price'] * $details['quantity'])); ?>
+                                                            <?php echo e(isset($details['price'])  && isset($details['quantity'])  ? number_format($details['price'] * $details['quantity']) : ''); ?>
 
                                                         </span>
                                                     </td>
@@ -142,6 +158,10 @@
                                                         <div class="card-total">
                                                             <span class="span-total">Tạm tính</span>
                                                             <span id="class-total1"><?php echo e(number_format($total)); ?></span>
+                                                        </div>
+                                                        <div class="card-total">
+                                                            <span class="span-total">Giảm giá</span>
+                                                            <span id="class-discount"><?php echo e(number_format($discount)); ?></span>
                                                         </div>
                                                         <div class="card-total">
                                                             <span class="span-total">Tổng</span>
@@ -186,6 +206,11 @@
                                                                 <input type="hidden" name="customer_id"
                                                                     value="<?php echo e(Auth::user()->id); ?>">
                                                             <?php endif; ?>
+                                                           
+                                                            <input name='total_order' id="total-order" type="hidden">
+                                                            <input name='discount' id="discount-order" type="hidden">
+                                                            <input type="hidden" id="name-voucher" name="name_voucher">
+
                                                             <button type="submit" class="btn-primary"
                                                                 style="width: 100%">Thanh toán</button>
                                                         </form>
@@ -313,6 +338,18 @@
         .text-red {
             color: red;
         }
+        #voucherContainer {
+            display: flex; /* Sử dụng flexbox */
+            align-items: center; /* Canh chỉnh theo chiều dọc */
+        }
+
+        #voucherContainer label {
+            margin-right: 10px; /* Khoảng cách giữa label và input */
+        }
+        #voucherContainer input {
+            width: 50%; /* Chiều rộng của input */
+            margin-right: 20px;
+        }
     </style>
     
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -345,6 +382,7 @@
                 });
             });
         });
+        
     </script>
 
     <script>
@@ -401,7 +439,7 @@
             var price = document.getElementById('price' + id);
             var totalPrice1 = document.getElementById('class-total1');
             var totalPrice2 = document.getElementById('class-total2');
-
+            var size = document.getElementById('size' + id)
             if (quantity.value * 1.0 < 1) {
                 document.getElementById('quantity' + id).value = 1;
                 return;
@@ -410,7 +448,7 @@
                 quantity.value = 1;
             }
 
-            var f = "?quantity=" + quantity.value + "&id=" + id;
+            var f = "?quantity=" + quantity.value + "&id=" + id + "&size=" + size.value;
             var _url = "/update-cart" + f;
             jQuery.ajax({
                 type: "GET",
@@ -431,7 +469,42 @@
                 return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
         }
+        document.addEventListener('DOMContentLoaded', function() {
+        var checkButton = document.getElementById('checkVoucher');
+        var voucherResult = document.getElementById('voucherResult');
 
+        checkButton.addEventListener('click', function() {
+            var voucherCode = document.getElementById('voucher').value;
+            var total  = document.getElementById('class-total2');
+            var discount  = document.getElementById('class-discount');
+            var total_order =  document.getElementById('total-order');
+            var discount_order  =  document.getElementById('discount-order');
+            var name_voucher  = document.getElementById('name-voucher');
+
+            checkVoucher(voucherCode);
+            function checkVoucher(voucherCode) {
+            $.ajax({
+                type: 'get',
+                url: '/check-voucher',
+
+                data: { voucher: voucherCode },
+                success: function(response) {
+                    alert(response.message);
+                    total.textContent = response.total;
+                    discount.textContent = response.discount;
+                    total_order.value = response.total;
+                    discount_order.value = response.discount;
+                    name_voucher.value = voucherCode;
+                },
+                error: function() {
+                    voucherResult.innerText = 'Đã có lỗi xảy ra khi kiểm tra mã voucher';
+                }
+            });
+        }
+        });
+
+
+});
         function removecart(id) {
             var f = "?id=" + id;
             var _url = "/remove-from-cart" + f;

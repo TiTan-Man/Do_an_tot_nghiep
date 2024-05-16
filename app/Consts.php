@@ -3,6 +3,12 @@ namespace App;
 
 class Consts
 {
+    const SIZE_PRODUCT = [
+        'S' => 'S',
+        'M' => 'M',
+        'L' => 'L',
+        'XL' => 'XL',
+    ];
     const ORDER_DETAIL_STATUS = [
         'pending' => 'Chờ duyệt',
         'delivery' => 'Đang giao',
