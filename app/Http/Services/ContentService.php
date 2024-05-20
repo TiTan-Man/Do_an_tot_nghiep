@@ -746,8 +746,8 @@ class ContentService
     public static function getOrderDetail($params)
     {
         $query = OrderDetail::select('tb_order_details.*')
-            ->selectRaw('tb_cms_posts.title AS post_title, tb_cms_posts.image, tb_cms_posts.image_thumb')
-            ->join('tb_cms_posts', 'tb_cms_posts.id', '=', 'tb_order_details.item_id')
+            ->selectRaw('tb_products.title AS post_title, tb_products.image  AS post_image, tb_products.giakm AS post_price, tb_products.id AS post_id')
+            ->join('tb_products', 'tb_products.id', '=', 'tb_order_details.item_id')
             ->when(!empty($params['status']), function ($query) use ($params) {
                 return $query->where('tb_order_details.status', $params['status']);
             })

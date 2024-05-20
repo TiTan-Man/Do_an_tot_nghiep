@@ -42,12 +42,7 @@ Route::namespace('FrontEnd')->group(function () {
   Route::get('dich-vu/{alias?}', 'CmsController@serviceCategory')->name('frontend.cms.service_category');
   Route::get('dich-vu/{alias_category}/{alias_detail}', 'CmsController@service')->name('frontend.cms.service');
 
-  Route::get('chuyen-khoa/{alias?}', 'CmsController@department')->name('frontend.cms.department');
 
-  Route::get('bac-si', 'CmsController@doctorList')->name('frontend.cms.doctor.list');
-
-  Route::get('thu-vien/{alias?}', 'CmsController@resourceCategory')->name('frontend.cms.resource_category');
-  Route::get('thu-vien/{alias_category}/{alias_detail}', 'CmsController@resource')->name('frontend.cms.resource');
 
   Route::get('xem-them-bai-viet', 'CmsController@viewMore')->name('frontend.cms.view_more');
   Route::get('tin-tuc/{alias?}', 'CmsController@postCategory')->name('frontend.cms.post_category');

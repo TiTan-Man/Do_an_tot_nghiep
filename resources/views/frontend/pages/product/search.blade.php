@@ -85,11 +85,9 @@ $image = '';
 																	<?php } ?>
 																</p>
 																
-																<div class="shopping-cart" style="width: 20%; float: left; " onclick="addToCart({{ $item->id }})">
-																	<i class="fa-solid fa-shopping-cart"></i>
-																</div>
 																
-																<div class="edu-rating rating-default" style="width: 80%; float: left; ">
+																
+																<div class="edu-rating rating-default" style="width: 100%; float: left; ">
 																	<div class="eduvibe-course-review-wrapper">
 																		<div class="review-stars-rated" title="5 out of 5 stars">
 																			<div class="review-star">

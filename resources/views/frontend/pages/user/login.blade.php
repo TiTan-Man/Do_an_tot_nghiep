@@ -33,8 +33,9 @@
                             </div>
                         @endif
 
-                        <div class="row">
-                            <div class="col-md-6 offset-md-3">
+                        <div class="row" >
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6 offset-md-3" >
                                 <!-- Form Đăng nhập -->
                                 <form action="{{ route('frontend.login.post') }}" method="POST" id="loginForm">
                                     @csrf
@@ -56,7 +57,7 @@
 
                                 <!-- Form Đăng ký -->
                                 <form action="{{ route('frontend.register.post') }}" method="POST"
-                                    id="registerForm" style="display: none;">
+                                    id="registerForm">
                                     @csrf
 
                                     <h3 class="text-center mb-4">Đăng ký</h3>
@@ -75,27 +76,18 @@
                                         <input type="password" class="form-control" id="registerPassword" name="password"
                                             required>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                                        <input type="password" class="form-control" id="confirmPassword" name="password"
+                                            required>
+                                    </div>
                                     <button type="submit" class="btn btn-success btn-block">Đăng ký</button>
                                     <p class="text-center mt-3">Đã có tài khoản? <a href="#" id="showLoginForm">Đăng
                                             nhập ngay</a></p>
                                 </form>
                             </div>
-
-                            <div class="col-md-6 offset-md-3">
-                                <h3 style="text-align: center;">Hoặc</h3>
-
-                                <div class="login-form">
-                                    <a href="{{ route('login.facebook') }}" class="login-facebook">
-                                        <i class="fa-brands fa-facebook-f"></i>
-                                        <span>Đăng nhập bằng Facebook</span>
-                                    </a>
-
-                                    <a href="{{ route('login.google') }}" class="login-google">
-                                        <i class="fa-brands fa-google"></i>
-                                        <span>Đăng nhập bằng Google</span>
-                                    </a>
-                                </div>
-                            </div>
+                            <div class="col-md-3"></div>
+                            
                         </div>
                     </div>
                 </div>

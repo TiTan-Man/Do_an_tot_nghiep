@@ -21,6 +21,7 @@ class OrderController extends Controller
 		$this->responseData['array_payment_staus'] = array(0=>'Chưa thanh toán',1=>'Đã thanh toán');
 	}
 
+
 	public function index(Request $request)
     {
 		if(ContentService::checkRole($this->routeDefault,'index') == 0){
@@ -38,11 +39,11 @@ class OrderController extends Controller
 
     public function edit(Order $order)
     {
-		$this->responseData['module_name'] = __('Order Product Management');
+		$this->responseData['module_name'] = __('Quản lý đơn hàng');
         $this->responseData['detail'] = $order;
 
         $rows = ContentService::getOrderDetail(['order_id'=> $order->id])->get();
-        dd($rows);
+        // dd($order);
         $this->responseData['rows'] = $rows;
         return $this->responseView($this->viewPart . '.edit');
     }

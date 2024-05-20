@@ -167,10 +167,10 @@ class Consts
         'service' => 'service',
     ];
     const ORDER_STATUS = [
-        'new' => 'new',
-        'processing' => 'processing',
-        'processed' => 'processed',
-        'cancel' => 'cancel'
+        'pending' => 'Chờ duyệt',
+        'delivery' => 'Đang giao',
+        'complete' => 'Hoàn thành',
+        'reject' => 'Hủy đơn',
     ];
     // Tạo danh sách chức năng định tuyến để gọi khi tạo trang trong admin -> người dùng có thể tùy chọn
     const ROUTE_NAME = [

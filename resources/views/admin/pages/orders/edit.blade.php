@@ -40,13 +40,13 @@
           @method('PUT')
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="profile-username">@lang('Order number') #{{ $detail->id }}</h3>
-              <p class="text-muted">{{ __('Created at') }}: {{ $detail->created_at }}</p>
+              <h3 class="profile-username">@lang('Đơn hàng số') #{{ $detail->id }}</h3>
+              <p class="text-muted">{{ __('Thời gian tạo') }}: {{ $detail->created_at }}</p>
             </div>
             <div class="box-body">
               <div class="form-horizontal">
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Fullname'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Họ và tên'):</label>
                   <label class="col-sm-9 col-xs-12">{{ $detail->name ?? '' }}</label>
                 </div>
 
@@ -57,13 +57,13 @@
                   </label>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Phone'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('SĐT'):</label>
                   <label class="col-sm-9 col-xs-12">
                     {{ $detail->phone ?? '' }}
                   </label>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Address'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Địa chỉ'):</label>
                   <label class="col-sm-9 col-xs-12">{{ $detail->address ?? '' }}</label>
                 </div>
                 <div class="form-group">
@@ -89,7 +89,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-3 text-right text-bold">@lang('Admin note'):</label>
+                  <label class="col-sm-3 text-right text-bold">@lang('Admin ghi chú'):</label>
                   <div class="col-md-9 col-xs-12">
                     <textarea name="admin_note" class="form-control" rows="5">{{ $detail->admin_note ?? old('admin_note') }}</textarea>
                   </div>
@@ -112,7 +112,7 @@
       <div class="col-md-7">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">@lang('Order product detail')</h3>
+            <h3 class="box-title">@lang('Chi tiết đơn')</h3>
           </div>
 
           <div class="box-body">
@@ -120,11 +120,12 @@
               <thead>
                 <tr>
                   <th>@lang('#')</th>
-                  <th>@lang('Product')</th>
-                  <th>@lang('Price')</th>
-                  <th>@lang('Quantity')</th>
-                  <th>@lang('Total')</th>
-                  <th>@lang('Action')</th>
+                  <th>@lang('Tên sản phẩm')</th>
+                  <th>@lang('Size')</th>
+                  <th>@lang('Giá')</th>
+                  <th>@lang('Số lượng')</th>
+                  <th>@lang('Tổng tiền')</th>
+                  <th>@lang('Hành động')</th>
                 </tr>
               </thead>
               <tbody>
@@ -133,6 +134,7 @@
                     $alias_detail = Str::slug($row->post_title);
                     // $url_link = route('frontend.cms.product', ['alias_category' => 'chi-tiet', 'alias_detail' => $alias_detail]) . '.html?id=' . $row->id;
                     $url_link = '';
+                    
                   @endphp
                   <form action="{{ route('order_details.update', $row->id) }}" method="POST">
                     @csrf
@@ -146,6 +148,9 @@
                           <img src="{{ $row->image_thumb ?? $row->image }}" style="height:100px">
                           {{ $row->post_title }}
                         </a>
+                      </td>
+                      <td>
+                        {{ $row->size }}
                       </td>
                       <td>
                         <input class="form-control" name="price" type="number" value="{{ $row->price }}" min="0"
